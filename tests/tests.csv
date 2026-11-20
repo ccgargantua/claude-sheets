@@ -1,0 +1,91 @@
+id,action,prompt,expected
+1,info,Show me the sheets and dimensions in report.xlsx,sheet info report.xlsx
+2,info,What sheets does data/inventory.ods contain?,sheet info data/inventory.ods
+3,info,Give me an overview of budget.xlsx: sheet names and sizes.,sheet info budget.xlsx
+4,info,How big is the spreadsheet contacts.csv? I want its info.,sheet info contacts.csv
+5,info,Run info on /home/me/q3/sales.xlsx,sheet info /home/me/q3/sales.xlsx
+6,read,Read everything in report.xlsx.,sheet read report.xlsx
+7,read,Show cells A1 to D5 from the Sales sheet of budget.xlsx.,sheet read budget.xlsx --sheet Sales --range A1:D5
+8,read,Dump the whole of contacts.csv as csv text.,sheet read contacts.csv --as csv
+9,read,"From inventory.ods, read range B2:B20 and print it as csv.",sheet read inventory.ods --range B2:B20 --as csv
+10,read,"Read the 'Q2 Totals' sheet in finance.xlsx, all cells.",sheet read finance.xlsx --sheet 'Q2 Totals'
+11,write,Put the number 42 in cell B3 of report.xlsx.,sheet write report.xlsx --cell B3 --value 42
+12,write,"In budget.xlsx on the Summary sheet, set A1 to Annual Budget.",sheet write budget.xlsx --cell A1 --value 'Annual Budget' --sheet Summary
+13,write,Set C10 in totals.xlsx to the formula that sums C1 through C9.,sheet write totals.xlsx --cell C10 --value '=SUM(C1:C9)'
+14,write,Write 3.14 into D4 of notes.csv.,sheet write notes.csv --cell D4 --value 3.14
+15,write,Change cell F2 on the Data sheet of sales.ods to the text pending.,sheet write sales.ods --cell F2 --value pending --sheet Data
+16,write-range,"In scores.xlsx, starting at A1, write a table with rows [Name, Score], [Ann, 90], [Bob, 85].","sheet write-range scores.xlsx --start A1 --data '[[""Name"",""Score""],[""Ann"",90],[""Bob"",85]]'"
+17,write-range,"Fill B2 onward in grid.csv with the rows 1,2,3 and 4,5,6 (numbers).","sheet write-range grid.csv --start B2 --data '[[1,2,3],[4,5,6]]'"
+18,write-range,"On the Inventory sheet of stock.xlsx, put one row apple, 10, true at A5 (true as a boolean).","sheet write-range stock.xlsx --start A5 --data '[[""apple"",10,true]]' --sheet Inventory"
+19,write-range,"Write the single column x, y, z downward from C1 in letters.ods.","sheet write-range letters.ods --start C1 --data '[[""x""],[""y""],[""z""]]'"
+20,write-range,"Starting at A1 in calc.xlsx, write two rows: the numbers 5 and 7, then a row with only the formula =A1+B1.","sheet write-range calc.xlsx --start A1 --data '[[5,7],[""=A1+B1""]]'"
+21,append,Append a row with Carol and 77 to scores.xlsx.,"sheet append scores.xlsx --data '[[""Carol"",77]]'"
+22,append,"Add two rows to log.csv: [2024, ""start""] and [2025, ""end""].","sheet append log.csv --data '[[2024,""start""],[2025,""end""]]'"
+23,append,"On the Expenses sheet in budget.xlsx, append the row rent, 1200.50.","sheet append budget.xlsx --data '[[""rent"",1200.5]]' --sheet Expenses"
+24,append,"Tack a row onto the bottom of people.ods: Dana, Lee, active (all text).","sheet append people.ods --data '[[""Dana"",""Lee"",""active""]]'"
+25,append,Append one row to totals.xlsx with the text sum and the formula =SUM(A1:A5).,"sheet append totals.xlsx --data '[[""sum"",""=SUM(A1:A5)""]]'"
+26,create,Create a new spreadsheet named new.xlsx.,sheet create new.xlsx
+27,create,Make a workbook budget.xlsx with sheets Income and Expenses.,"sheet create budget.xlsx --sheets Income,Expenses"
+28,create,Create an empty file empty.csv.,sheet create empty.csv
+29,create,"Create sales.ods with three sheets: Q1, Q2, Q3.","sheet create sales.ods --sheets Q1,Q2,Q3"
+30,create,I need a fresh xlsx called tracker.xlsx whose only sheet is named Tasks.,sheet create tracker.xlsx --sheets Tasks
+31,add-sheet,Add a sheet called Summary to report.xlsx.,sheet add-sheet report.xlsx --name Summary
+32,add-sheet,"In budget.xlsx, create another sheet named 2025.",sheet add-sheet budget.xlsx --name 2025
+33,add-sheet,Add a new tab Notes to inventory.ods.,sheet add-sheet inventory.ods --name Notes
+34,add-sheet,Insert a worksheet named 'Raw Data' into export.xlsx.,sheet add-sheet export.xlsx --name 'Raw Data'
+35,add-sheet,Give finance.xlsx an extra sheet called Archive.,sheet add-sheet finance.xlsx --name Archive
+36,delete-sheet,Delete the sheet Scratch from report.xlsx.,sheet delete-sheet report.xlsx --name Scratch
+37,delete-sheet,Remove the Sheet2 tab from budget.xlsx.,sheet delete-sheet budget.xlsx --name Sheet2
+38,delete-sheet,Drop the worksheet named Old Data from archive.ods.,sheet delete-sheet archive.ods --name 'Old Data'
+39,delete-sheet,Get rid of the Temp sheet in model.xlsx.,sheet delete-sheet model.xlsx --name Temp
+40,delete-sheet,"In finance.xlsx, delete the sheet called 2022.",sheet delete-sheet finance.xlsx --name 2022
+41,rename-sheet,Rename the sheet Sheet1 to Data in report.xlsx.,sheet rename-sheet report.xlsx --name Sheet1 --new-name Data
+42,rename-sheet,"In budget.xlsx, change the tab name Draft to Final.",sheet rename-sheet budget.xlsx --name Draft --new-name Final
+43,rename-sheet,Rename 'Q1 Sales' to 'Q1 Revenue' in sales.ods.,sheet rename-sheet sales.ods --name 'Q1 Sales' --new-name 'Q1 Revenue'
+44,rename-sheet,"In model.xlsx, call the Inputs sheet Assumptions instead.",sheet rename-sheet model.xlsx --name Inputs --new-name Assumptions
+45,rename-sheet,Retitle worksheet Sheet2 as Backup in tracker.xlsx.,sheet rename-sheet tracker.xlsx --name Sheet2 --new-name Backup
+46,insert-rows,Insert one blank row at row 3 in report.xlsx.,sheet insert-rows report.xlsx --at 3
+47,insert-rows,Insert 5 empty rows before row 10 of budget.xlsx.,sheet insert-rows budget.xlsx --at 10 --count 5
+48,insert-rows,"In the Data sheet of sales.ods, add 2 blank rows at row 1.",sheet insert-rows sales.ods --at 1 --count 2 --sheet Data
+49,insert-rows,Put a blank line at row 7 of log.csv.,sheet insert-rows log.csv --at 7
+50,insert-rows,"In tracker.xlsx sheet Tasks, insert three new rows starting at row 4.",sheet insert-rows tracker.xlsx --at 4 --count 3 --sheet Tasks
+51,delete-rows,Delete row 2 from report.xlsx.,sheet delete-rows report.xlsx --at 2
+52,delete-rows,Remove 4 rows from budget.xlsx starting at row 6.,sheet delete-rows budget.xlsx --at 6 --count 4
+53,delete-rows,"On the Old sheet of archive.ods, delete rows 1 and 2.",sheet delete-rows archive.ods --at 1 --count 2 --sheet Old
+54,delete-rows,Delete row 15 of log.csv.,sheet delete-rows log.csv --at 15
+55,delete-rows,"In tracker.xlsx, Tasks sheet, delete 10 rows beginning at row 20.",sheet delete-rows tracker.xlsx --at 20 --count 10 --sheet Tasks
+56,find,Search report.xlsx for the text invoice.,sheet find report.xlsx --query invoice
+57,find,Find cells in contacts.csv that exactly match smith.,sheet find contacts.csv --query smith --exact
+58,find,Look for 'total cost' in the Summary sheet of budget.xlsx.,sheet find budget.xlsx --query 'total cost' --sheet Summary
+59,find,"In inventory.ods, find 2024 in the Stock sheet, whole-cell matches only.",sheet find inventory.ods --query 2024 --exact --sheet Stock
+60,find,Where does the word pending appear in tracker.xlsx?,sheet find tracker.xlsx --query pending
+61,sort,Sort report.xlsx by column B ascending.,sheet sort report.xlsx --by B
+62,sort,Sort scores.xlsx by column C in descending order.,sheet sort scores.xlsx --by C --desc
+63,sort,Sort people.csv by column A; the first row is a header so keep it on top.,sheet sort people.csv --by A --header
+64,sort,"On the Sales sheet of sales.xlsx, sort by column D descending, keeping the header row.",sheet sort sales.xlsx --by D --desc --header --sheet Sales
+65,sort,"Order the rows of stock.ods by column E, ascending, on the Items sheet.",sheet sort stock.ods --by E --sheet Items
+66,convert,Convert report.xlsx to report.csv.,sheet convert report.xlsx report.csv
+67,convert,Turn data.csv into data.xlsx.,sheet convert data.csv data.xlsx
+68,convert,Save inventory.ods as inventory.xlsx.,sheet convert inventory.ods inventory.xlsx
+69,convert,Convert budget.xlsx to an OpenDocument file named budget.ods.,sheet convert budget.xlsx budget.ods
+70,convert,Convert /tmp/in.csv into /tmp/out.ods.,sheet convert /tmp/in.csv /tmp/out.ods
+71,format,Make A1:D1 bold in report.xlsx.,sheet format report.xlsx --range A1:D1 --bold
+72,format,"In budget.xlsx, make B2:B20 italic and underlined.",sheet format budget.xlsx --range B2:B20 --italic --underline
+73,format,Set the font size of A1 to 18 in title.xlsx.,sheet format title.xlsx --range A1 --font-size 18
+74,format,"In sales.xlsx on the Q1 sheet, fill A1:F1 with yellow FFFF00 and center-align it.",sheet format sales.xlsx --range A1:F1 --fill FFFF00 --align center --sheet Q1
+75,format,Format C2:C50 of prices.ods with the number format 0.00 and red font color FF0000.,sheet format prices.ods --range C2:C50 --number-format 0.00 --font-color FF0000
+76,col-width,Set column A of report.xlsx to width 20.,sheet col-width report.xlsx --col A --width 20
+77,col-width,Make column C 12.5 wide in budget.xlsx.,sheet col-width budget.xlsx --col C --width 12.5
+78,col-width,"On the Data sheet of sales.ods, set column B width to 30.",sheet col-width sales.ods --col B --width 30 --sheet Data
+79,col-width,Widen column F in tracker.xlsx to 45.,sheet col-width tracker.xlsx --col F --width 45
+80,col-width,Set the width of column AA to 8 in wide.xlsx.,sheet col-width wide.xlsx --col AA --width 8
+81,merge,Merge A1:D1 in report.xlsx.,sheet merge report.xlsx --range A1:D1
+82,merge,Merge cells B2:C3 on the Summary sheet of budget.xlsx.,sheet merge budget.xlsx --range B2:C3 --sheet Summary
+83,merge,"In title.ods, merge A1:F1 into one cell.",sheet merge title.ods --range A1:F1
+84,merge,Combine cells A5:A10 in tracker.xlsx.,sheet merge tracker.xlsx --range A5:A10
+85,merge,"On sheet Q4 of sales.xlsx, merge the range C1:E2.",sheet merge sales.xlsx --range C1:E2 --sheet Q4
+86,unmerge,Unmerge A1:D1 in report.xlsx.,sheet unmerge report.xlsx --range A1:D1
+87,unmerge,Split the merged cells B2:C3 on the Summary sheet of budget.xlsx.,sheet unmerge budget.xlsx --range B2:C3 --sheet Summary
+88,unmerge,"In title.ods, unmerge the range A1:F1.",sheet unmerge title.ods --range A1:F1
+89,unmerge,Undo the merge on A5:A10 in tracker.xlsx.,sheet unmerge tracker.xlsx --range A5:A10
+90,unmerge,"On sheet Q4 of sales.xlsx, unmerge C1:E2.",sheet unmerge sales.xlsx --range C1:E2 --sheet Q4

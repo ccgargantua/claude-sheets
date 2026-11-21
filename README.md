@@ -66,6 +66,8 @@ doc/                        usage, development, testing docs
 |---|---|---|
 | haiku | 296/305 (97.0%) | 9 actions at 4/5, one miss each. Shell commands instead of the CLI: read (`cat`), create (`touch`). Asked a question instead of answering: rename-sheet, unfreeze. Wrong flag or action: delete-cols (invented `--cols C:E`), show-rows (used `read`), delete-comment (used `comment --text ''`). Malformed command: row-height (put `--sheet` before the action), comment (left a literal `FILE` placeholder). |
 
+After this run, rules 7-10 were added to the sheet skill to target these misses (no shell commands, no questions or prose, no placeholders, action right after `sheet`). Not yet rerun.
+
 ### v1 (openpyxl/odfpy backend, 18 actions)
 
 2026-11-20, 90 prompts, 1 rep each, `cli` backend.

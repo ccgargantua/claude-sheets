@@ -1,9 +1,10 @@
 # Testing
 
 Two suites:
-- Unit tests (`tests/unit`): test CLI code. `.venv/bin/python -m unittest discover -s tests/unit`.
+- Unit tests (`tests/unit`): test CLI code. See [Unit tests](#unit-tests).
 - Agent suite (`tests/run_tests.py`): tests the sheet skill. Rest of this page.
 
+- [Unit tests](#unit-tests)
 - [Design](#design)
 - [tests.csv](#testscsv)
 - [Running](#running)
@@ -13,9 +14,25 @@ Two suites:
 - [Results](#results)
 - [API backend plan](#api-backend-plan)
 
+## Unit tests
+
+```
+python3 -m unittest discover -s tests/unit      # ~3 min
+```
+
+Needs LibreOffice (`soffice`) and `python3-uno`; tests drive the real backend. Each module sets `SHEETCLI_STATE_DIR` to a temp dir in `setUpModule` (own daemon, pipe, profile; stopped in `tearDownModule`), so tests never touch the repo's `.sheetcli/`.
+
+| file | covers |
+|---|---|
+| `test_sheet.py` | parser (61 actions, `--dry-run`/`--backup` only on mutating handlers, import without `uno`), create/info/read/write/append, typing, formulas, dates, sort/find, sheets, format/col-width/merge, convert, batch, dry-run/backup, limits, daemon (start/reuse/stop, recovery, idle watchdog, parallel serialization). Defines shared `Base`, `FORMATS`, `RICH`, `sheet()` |
+| `test_structure_formatting.py` | copy/move/hide sheets, hide/show rows/cols, freeze, insert/delete cols, clear, copy/move/fill, row-height/autofit/get-format, cond-format, autofilter, csv gating |
+| `test_data_query_charts.py` | names, validation, comments, hyperlinks, protect, filter/dedupe/stats, charts, images, csv gating |
+
+Conventions: multi-format tests loop over `xlsx`/`ods` (`RICH`) or all of `FORMATS` with `subTest`; files are re-inspected after saving; every test checks no stray `.~lock*` or `.sheetcli-*.tmp` files are left.
+
 ## Design
 
-Each row's `prompt` goes to a fresh model whose system prompt is `.claude/skills/sheet/SKILL.md` plus an instruction to answer with one shell command line. The command is parsed with `build_parser()` and compared to the parsed `expected`. Nothing is executed.
+Each row's `prompt` goes to a fresh model whose system prompt is `.claude/skills/sheet/SKILL.md` plus an instruction to answer with one shell command line. The command is parsed with `build_parser()` (the real 61-action parser; `sheet` in the command stands for `python3 src/sheet.py`) and compared to the parsed `expected`. Nothing is executed.
 
 ## tests.csv
 
@@ -26,14 +43,14 @@ Each row's `prompt` goes to a fresh model whose system prompt is `.claude/skills
 | `prompt` | User request given to the model |
 | `expected` | Correct command, e.g. `sheet info report.xlsx` |
 
-`--validate` checks that every `expected` parses, its action equals `action`, and each action has exactly 5 rows.
+`tests.csv` has 305 rows: 61 actions x 5. `--validate` checks that every `expected` parses, its action equals `action`, and each action has exactly 5 rows. It needs no `soffice` or `uno` (parsing only).
 
 ## Running
 
 ```
 python3 tests/run_tests.py --validate            # no model calls; run first
 python3 tests/run_tests.py --ids 1,2,3           # smoke
-python3 tests/run_tests.py --filter sort         # one action
+python3 tests/run_tests.py --filter sort         # one action (any of the 61)
 python3 tests/run_tests.py --filter sort --repeat 5
 python3 tests/run_tests.py                       # full: one call per row
 ```
@@ -75,7 +92,7 @@ Still leaks (cannot be suppressed with the CLI backend):
 
 Both commands are parsed with the real argparse parser, then normalized, so option order and quoting do not matter:
 - The first token that is a known action starts the command (a leading `python src/sheet.py` is ignored); only the first non-empty line of the reply is used, backticks stripped.
-- `--data` is compared as parsed JSON.
+- `--data` and `--ops` are compared as parsed JSON. For `--ops`, each op object is normalized the same way (op `data` parsed; op `cell`, `range`, `start`, `col`, `by` uppercased), so key order and quoting inside ops do not matter. `--ops-file` is compared as a path string.
 - `cell`, `range`, `start`, `col`, `by` are uppercased.
 - Pass = same action and identical args.
 

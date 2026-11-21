@@ -89,3 +89,218 @@ id,action,prompt,expected
 88,unmerge,"In title.ods, unmerge the range A1:F1.",sheet unmerge title.ods --range A1:F1
 89,unmerge,Undo the merge on A5:A10 in tracker.xlsx.,sheet unmerge tracker.xlsx --range A5:A10
 90,unmerge,"On sheet Q4 of sales.xlsx, unmerge C1:E2.",sheet unmerge sales.xlsx --range C1:E2 --sheet Q4
+91,batch,"In report.xlsx, write 'Total' in A10 and make A10 bold, as one batch.","sheet batch report.xlsx --ops '[{""action"":""write"",""cell"":""A10"",""value"":""Total""},{""action"":""format"",""range"":""A10"",""bold"":true}]'"
+92,batch,Atomically in sales.xlsx: set column B width to 18 and freeze at A2.,"sheet batch sales.xlsx --ops '[{""action"":""col-width"",""col"":""B"",""width"":18},{""action"":""freeze"",""cell"":""A2""}]'"
+93,batch,Apply the operations in /tmp/ops.json to budget.xlsx in a single save.,sheet batch budget.xlsx --ops-file /tmp/ops.json
+94,batch,"In data.ods on sheet Q1, in one batch, delete row 3 and insert 2 rows at row 1.","sheet batch data.ods --ops '[{""action"":""delete-rows"",""at"":3,""sheet"":""Q1""},{""action"":""insert-rows"",""at"":1,""count"":2,""sheet"":""Q1""}]'"
+95,batch,"Batch on inventory.xlsx: write 5 into B2, then sort by column A descending.","sheet batch inventory.xlsx --ops '[{""action"":""write"",""cell"":""B2"",""value"":5},{""action"":""sort"",""by"":""A"",""desc"":true}]'"
+96,recalc,Force a full recalculation of report.xlsx.,sheet recalc report.xlsx
+97,recalc,Recalculate all formulas in budget.ods and save.,sheet recalc budget.ods
+98,recalc,Hard recalc finance/q3.xlsx please.,sheet recalc finance/q3.xlsx
+99,recalc,The formulas in model.xlsx look stale; recalculate them.,sheet recalc model.xlsx
+100,recalc,Run a recalc on totals.xlsx.,sheet recalc totals.xlsx
+101,insert-cols,Insert a blank column before column C in report.xlsx.,sheet insert-cols report.xlsx --at C
+102,insert-cols,In sales.xlsx add 3 empty columns starting at column B.,sheet insert-cols sales.xlsx --at B --count 3
+103,insert-cols,"On the Data sheet of stats.ods, insert two columns at D.",sheet insert-cols stats.ods --at D --count 2 --sheet Data
+104,insert-cols,Put a new empty column at A in budget.xlsx.,sheet insert-cols budget.xlsx --at A
+105,insert-cols,"In plan.xlsx sheet Q2, insert 4 blank columns before column F.",sheet insert-cols plan.xlsx --at F --count 4 --sheet Q2
+106,delete-cols,Delete column B from report.xlsx.,sheet delete-cols report.xlsx --at B
+107,delete-cols,Remove 3 columns from sales.xlsx starting at column C.,sheet delete-cols sales.xlsx --at C --count 3
+108,delete-cols,"On the Raw sheet of logs.ods, delete columns D and E.",sheet delete-cols logs.ods --at D --count 2 --sheet Raw
+109,delete-cols,Drop column A of contacts.csv.,sheet delete-cols contacts.csv --at A
+110,delete-cols,"In plan.xlsx sheet Q2, delete 2 columns starting at G.",sheet delete-cols plan.xlsx --at G --count 2 --sheet Q2
+111,clear,Clear everything in A1:D10 of report.xlsx.,sheet clear report.xlsx --range A1:D10
+112,clear,Empty the contents of B2:B20 in sales.xlsx but keep the formatting.,sheet clear sales.xlsx --range B2:B20 --what contents
+113,clear,Remove just the formatting from A1:F1 in budget.ods.,sheet clear budget.ods --range A1:F1 --what formats
+114,clear,"On the Draft sheet of notes.xlsx, wipe C5:E9.",sheet clear notes.xlsx --range C5:E9 --sheet Draft
+115,clear,"Clear the values in the range A2:C100 of data.csv, leaving formats alone.",sheet clear data.csv --range A2:C100 --what contents
+116,copy-range,Copy A1:C5 to E1 in report.xlsx.,sheet copy-range report.xlsx --src A1:C5 --dst E1
+117,copy-range,In sales.xlsx copy B2:B10 into D2.,sheet copy-range sales.xlsx --src B2:B10 --dst D2
+118,copy-range,Copy A1:D4 on sheet Q1 of budget.xlsx to A1 on sheet Q2.,sheet copy-range budget.xlsx --src A1:D4 --dst A1 --sheet Q1 --dst-sheet Q2
+119,copy-range,Duplicate the block A2:A8 of data.ods to C2.,sheet copy-range data.ods --src A2:A8 --dst C2
+120,copy-range,From the Input sheet of model.xlsx copy B1:B3 to F10 on the Output sheet.,sheet copy-range model.xlsx --src B1:B3 --dst F10 --sheet Input --dst-sheet Output
+121,move-range,Move A1:C5 to E1 in report.xlsx.,sheet move-range report.xlsx --src A1:C5 --dst E1
+122,move-range,In sales.xlsx move B2:B10 to D2.,sheet move-range sales.xlsx --src B2:B10 --dst D2
+123,move-range,Move A1:D4 from sheet Q1 of budget.xlsx to A1 on sheet Q2.,sheet move-range budget.xlsx --src A1:D4 --dst A1 --sheet Q1 --dst-sheet Q2
+124,move-range,Cut A2:A8 of data.ods and paste it at C2.,sheet move-range data.ods --src A2:A8 --dst C2
+125,move-range,"Relocate the cells F1:G6 to A20 in plan.xlsx, sheet Summary.",sheet move-range plan.xlsx --src F1:G6 --dst A20 --sheet Summary
+126,fill,Fill A2:A20 downward from A2 in report.xlsx.,sheet fill report.xlsx --range A2:A20
+127,fill,"In sales.xlsx, fill B1:H1 to the right.",sheet fill sales.xlsx --range B1:H1 --mode right
+128,fill,"Fill A1:A10 of index.xlsx with a series starting from the value in A1, step 1.",sheet fill index.xlsx --range A1:A10 --mode series
+129,fill,In data.ods fill C1:C12 as a series with a step of 5.,sheet fill data.ods --range C1:C12 --mode series --step 5
+130,fill,Copy the formula in D2 down through D50 on the Calc sheet of model.xlsx.,sheet fill model.xlsx --range D2:D50 --mode down --sheet Calc
+131,copy-sheet,Duplicate the Sales sheet in report.xlsx as Sales Copy.,sheet copy-sheet report.xlsx --name Sales --new-name 'Sales Copy'
+132,copy-sheet,In budget.xlsx copy sheet Q1 to a new sheet Q2.,sheet copy-sheet budget.xlsx --name Q1 --new-name Q2
+133,copy-sheet,Copy the Template sheet of plan.ods to Jan and put it in position 1.,sheet copy-sheet plan.ods --name Template --new-name Jan --position 1
+134,copy-sheet,"Clone sheet Data in stats.xlsx under the name Data2, placing it second.",sheet copy-sheet stats.xlsx --name Data --new-name Data2 --position 2
+135,copy-sheet,Make a copy of Summary called Summary_old in finance.xlsx.,sheet copy-sheet finance.xlsx --name Summary --new-name Summary_old
+136,move-sheet,Move the Summary sheet to the first position in report.xlsx.,sheet move-sheet report.xlsx --name Summary --position 1
+137,move-sheet,In budget.xlsx put sheet Q4 in position 2.,sheet move-sheet budget.xlsx --name Q4 --position 2
+138,move-sheet,Reorder plan.ods so that Notes is the 3rd sheet.,sheet move-sheet plan.ods --name Notes --position 3
+139,move-sheet,Make Raw the first sheet of logs.xlsx.,sheet move-sheet logs.xlsx --name Raw --position 1
+140,move-sheet,Move the sheet named Totals to position 4 in finance.xlsx.,sheet move-sheet finance.xlsx --name Totals --position 4
+141,hide-sheet,Hide the Raw sheet in report.xlsx.,sheet hide-sheet report.xlsx --name Raw
+142,hide-sheet,In budget.xlsx make the sheet Calc hidden.,sheet hide-sheet budget.xlsx --name Calc
+143,hide-sheet,Hide sheet Notes in plan.ods.,sheet hide-sheet plan.ods --name Notes
+144,hide-sheet,Please hide the 'Old Data' sheet of archive.xlsx.,sheet hide-sheet archive.xlsx --name 'Old Data'
+145,hide-sheet,Conceal the Lookup sheet in model.xlsx.,sheet hide-sheet model.xlsx --name Lookup
+146,show-sheet,Unhide the Raw sheet in report.xlsx.,sheet show-sheet report.xlsx --name Raw
+147,show-sheet,In budget.xlsx make the hidden sheet Calc visible again.,sheet show-sheet budget.xlsx --name Calc
+148,show-sheet,Show sheet Notes in plan.ods.,sheet show-sheet plan.ods --name Notes
+149,show-sheet,Reveal the 'Old Data' sheet of archive.xlsx.,sheet show-sheet archive.xlsx --name 'Old Data'
+150,show-sheet,Unhide Lookup in model.xlsx.,sheet show-sheet model.xlsx --name Lookup
+151,hide-rows,Hide rows 5 to 10 in report.xlsx.,sheet hide-rows report.xlsx --rows 5:10
+152,hide-rows,In sales.xlsx hide row 3.,sheet hide-rows sales.xlsx --rows 3
+153,hide-rows,Hide rows 2:4 on the Data sheet of stats.ods.,sheet hide-rows stats.ods --rows 2:4 --sheet Data
+154,hide-rows,Make rows 20 through 30 invisible in budget.xlsx.,sheet hide-rows budget.xlsx --rows 20:30
+155,hide-rows,On sheet Q1 of plan.xlsx hide row 1.,sheet hide-rows plan.xlsx --rows 1 --sheet Q1
+156,show-rows,Unhide rows 5 to 10 in report.xlsx.,sheet show-rows report.xlsx --rows 5:10
+157,show-rows,In sales.xlsx show row 3 again.,sheet show-rows sales.xlsx --rows 3
+158,show-rows,Show rows 2:4 on the Data sheet of stats.ods.,sheet show-rows stats.ods --rows 2:4 --sheet Data
+159,show-rows,Make rows 20 through 30 visible in budget.xlsx.,sheet show-rows budget.xlsx --rows 20:30
+160,show-rows,On sheet Q1 of plan.xlsx unhide row 1.,sheet show-rows plan.xlsx --rows 1 --sheet Q1
+161,hide-cols,Hide column C in report.xlsx.,sheet hide-cols report.xlsx --cols C
+162,hide-cols,In sales.xlsx hide columns B to D.,sheet hide-cols sales.xlsx --cols B:D
+163,hide-cols,Hide column F on the Data sheet of stats.ods.,sheet hide-cols stats.ods --cols F --sheet Data
+164,hide-cols,Make columns E through H invisible in budget.xlsx.,sheet hide-cols budget.xlsx --cols E:H
+165,hide-cols,On sheet Q1 of plan.xlsx hide column A.,sheet hide-cols plan.xlsx --cols A --sheet Q1
+166,show-cols,Unhide column C in report.xlsx.,sheet show-cols report.xlsx --cols C
+167,show-cols,In sales.xlsx show columns B to D again.,sheet show-cols sales.xlsx --cols B:D
+168,show-cols,Show column F on the Data sheet of stats.ods.,sheet show-cols stats.ods --cols F --sheet Data
+169,show-cols,Make columns E through H visible in budget.xlsx.,sheet show-cols budget.xlsx --cols E:H
+170,show-cols,On sheet Q1 of plan.xlsx unhide column A.,sheet show-cols plan.xlsx --cols A --sheet Q1
+171,freeze,Freeze the top row of report.xlsx.,sheet freeze report.xlsx --cell A2
+172,freeze,In sales.xlsx freeze the first column.,sheet freeze sales.xlsx --cell B1
+173,freeze,Freeze panes at C3 in budget.xlsx.,sheet freeze budget.xlsx --cell C3
+174,freeze,On the Data sheet of stats.ods freeze the first two rows.,sheet freeze stats.ods --cell A3 --sheet Data
+175,freeze,Freeze the first row and first column of plan.xlsx.,sheet freeze plan.xlsx --cell B2
+176,unfreeze,Unfreeze panes in report.xlsx.,sheet unfreeze report.xlsx
+177,unfreeze,Remove the frozen rows from sales.xlsx.,sheet unfreeze sales.xlsx
+178,unfreeze,"On the Data sheet of stats.ods, unfreeze.",sheet unfreeze stats.ods --sheet Data
+179,unfreeze,Release the frozen panes on sheet Q1 of budget.xlsx.,sheet unfreeze budget.xlsx --sheet Q1
+180,unfreeze,Stop freezing the header in plan.xlsx.,sheet unfreeze plan.xlsx
+181,row-height,Set row 1 of report.xlsx to 30 points tall.,sheet row-height report.xlsx --rows 1 --height 30
+182,row-height,In sales.xlsx make rows 2 to 10 24 points high.,sheet row-height sales.xlsx --rows 2:10 --height 24
+183,row-height,On the Data sheet of stats.ods set row 5 height to 18.5 points.,sheet row-height stats.ods --rows 5 --height 18.5 --sheet Data
+184,row-height,Make rows 1:3 in budget.xlsx 40 pt tall.,sheet row-height budget.xlsx --rows 1:3 --height 40
+185,row-height,Change the height of row 12 to 15 points in plan.xlsx sheet Q1.,sheet row-height plan.xlsx --rows 12 --height 15 --sheet Q1
+186,autofit,Autofit column A in report.xlsx.,sheet autofit report.xlsx --cols A
+187,autofit,Make columns A to F of sales.xlsx fit their content.,sheet autofit sales.xlsx --cols A:F
+188,autofit,Auto-size rows 1:10 in budget.xlsx.,sheet autofit budget.xlsx --rows 1:10
+189,autofit,On the Data sheet of stats.ods autofit column B and row 1.,sheet autofit stats.ods --cols B --rows 1 --sheet Data
+190,autofit,Fit column C to its contents on sheet Q1 of plan.xlsx.,sheet autofit plan.xlsx --cols C --sheet Q1
+191,autofilter,Add an autofilter to A1:F100 in report.xlsx.,sheet autofilter report.xlsx --range A1:F100
+192,autofilter,Turn on filter dropdowns for A1:D50 on the Sales sheet of sales.xlsx.,sheet autofilter sales.xlsx --range A1:D50 --sheet Sales
+193,autofilter,Remove the autofilter from budget.xlsx.,sheet autofilter budget.xlsx --off
+194,autofilter,Switch off the autofilter on the Data sheet of stats.ods.,sheet autofilter stats.ods --off --sheet Data
+195,autofilter,Enable autofilter buttons on B1:H200 in plan.xlsx.,sheet autofilter plan.xlsx --range B1:H200
+196,get-format,What is the formatting of cell A1 in report.xlsx?,sheet get-format report.xlsx --cell A1
+197,get-format,Show me the font and fill of B5 in sales.xlsx.,sheet get-format sales.xlsx --cell B5
+198,get-format,Get the format of C3 on the Data sheet of stats.ods.,sheet get-format stats.ods --cell C3 --sheet Data
+199,get-format,Is D10 bold in budget.xlsx? Inspect its format.,sheet get-format budget.xlsx --cell D10
+200,get-format,Report the number format and borders for F2 in plan.xlsx sheet Q1.,sheet get-format plan.xlsx --cell F2 --sheet Q1
+201,cond-format,"In sales.xlsx, highlight B2:B50 in red fill (FF0000) when the value is greater than 100.",sheet cond-format sales.xlsx --range B2:B50 --condition gt --value 100 --fill FF0000
+202,cond-format,Make cells in C1:C30 of budget.xlsx bold green text (00AA00) if less than 0.,sheet cond-format budget.xlsx --range C1:C30 --condition lt --value 0 --font-color 00AA00 --bold
+203,cond-format,In report.xlsx highlight D2:D40 yellow (FFFF00) when between 10 and 20.,sheet cond-format report.xlsx --range D2:D40 --condition between --value 10 --value2 20 --fill FFFF00
+204,cond-format,"On the Data sheet of stats.ods, color A1:A100 orange (FFA500) when the cell contains error.",sheet cond-format stats.ods --range A1:A100 --condition contains --value error --fill FFA500 --sheet Data
+205,cond-format,"In plan.xlsx, fill E2:E20 with 'CCCCCC' where the value equals 0.",sheet cond-format plan.xlsx --range E2:E20 --condition eq --value 0 --fill CCCCCC
+206,cond-format-clear,Remove conditional formatting from B2:B50 in sales.xlsx.,sheet cond-format-clear sales.xlsx --range B2:B50
+207,cond-format-clear,Clear the conditional formats in C1:C30 of budget.xlsx.,sheet cond-format-clear budget.xlsx --range C1:C30
+208,cond-format-clear,"On the Data sheet of stats.ods, delete conditional formatting for A1:A100.",sheet cond-format-clear stats.ods --range A1:A100 --sheet Data
+209,cond-format-clear,Get rid of the conditional highlighting in D2:D40 of report.xlsx.,sheet cond-format-clear report.xlsx --range D2:D40
+210,cond-format-clear,Remove the conditional format rules on E2:E20 of plan.xlsx sheet Q1.,sheet cond-format-clear plan.xlsx --range E2:E20 --sheet Q1
+211,define-name,Define a named range Sales for B2:B50 in report.xlsx.,sheet define-name report.xlsx --name Sales --range B2:B50
+212,define-name,In budget.xlsx name the cell C1 TaxRate.,sheet define-name budget.xlsx --name TaxRate --range C1
+213,define-name,Create a named range Totals pointing at Summary!A1:D1 in finance.xlsx.,sheet define-name finance.xlsx --name Totals --range 'Summary!A1:D1'
+214,define-name,"On the Data sheet of stats.ods, define the name Inputs as A1:C20.",sheet define-name stats.ods --name Inputs --range A1:C20 --sheet Data
+215,define-name,Give the range E2:E100 the name Prices in plan.xlsx.,sheet define-name plan.xlsx --name Prices --range E2:E100
+216,delete-name,Delete the named range Sales from report.xlsx.,sheet delete-name report.xlsx --name Sales
+217,delete-name,Remove the name TaxRate in budget.xlsx.,sheet delete-name budget.xlsx --name TaxRate
+218,delete-name,Drop the defined name Totals from finance.xlsx.,sheet delete-name finance.xlsx --name Totals
+219,delete-name,In stats.ods delete the named range Inputs.,sheet delete-name stats.ods --name Inputs
+220,delete-name,Get rid of the name Prices in plan.xlsx.,sheet delete-name plan.xlsx --name Prices
+221,names,List the named ranges in report.xlsx.,sheet names report.xlsx
+222,names,What names are defined in budget.xlsx?,sheet names budget.xlsx
+223,names,Show all defined names of finance.xlsx.,sheet names finance.xlsx
+224,names,Which named ranges does stats.ods have?,sheet names stats.ods
+225,names,Give me the named ranges in plan.xlsx.,sheet names plan.xlsx
+226,validation,"Restrict B2:B20 in report.xlsx to a dropdown of Yes,No.","sheet validation report.xlsx --range B2:B20 --type list --values Yes,No"
+227,validation,In sales.xlsx allow only whole numbers between 1 and 100 in C2:C50.,sheet validation sales.xlsx --range C2:C50 --type whole --min 1 --max 100
+228,validation,Require decimals of at least 0 in D2:D30 of budget.xlsx.,sheet validation budget.xlsx --range D2:D30 --type decimal --min 0
+229,validation,"On the Data sheet of stats.ods, limit A2:A40 to text of at most 10 characters.",sheet validation stats.ods --range A2:A40 --type text-length --max 10 --sheet Data
+230,validation,"In plan.xlsx make E2:E20 a dropdown of Low,Medium,High.","sheet validation plan.xlsx --range E2:E20 --type list --values Low,Medium,High"
+231,validation-clear,Remove data validation from B2:B20 in report.xlsx.,sheet validation-clear report.xlsx --range B2:B20
+232,validation-clear,Clear the validation rules on C2:C50 of sales.xlsx.,sheet validation-clear sales.xlsx --range C2:C50
+233,validation-clear,"On the Data sheet of stats.ods, remove validation from A2:A40.",sheet validation-clear stats.ods --range A2:A40 --sheet Data
+234,validation-clear,Delete the dropdown restriction in E2:E20 of plan.xlsx.,sheet validation-clear plan.xlsx --range E2:E20
+235,validation-clear,Remove the input validation on D2:D30 in budget.xlsx.,sheet validation-clear budget.xlsx --range D2:D30
+236,comment,Add a comment 'Check this' to A1 in report.xlsx.,sheet comment report.xlsx --cell A1 --text 'Check this'
+237,comment,In sales.xlsx attach the note 'Estimated' to cell B5.,sheet comment sales.xlsx --cell B5 --text Estimated
+238,comment,"On the Data sheet of stats.ods, comment on C3: 'Outlier removed'.",sheet comment stats.ods --cell C3 --text 'Outlier removed' --sheet Data
+239,comment,Put a comment saying 'Needs approval' on D10 of budget.xlsx.,sheet comment budget.xlsx --cell D10 --text 'Needs approval'
+240,comment,Add the cell note 'Verified 2024' to F2 on sheet Q1 of plan.xlsx.,sheet comment plan.xlsx --cell F2 --text 'Verified 2024' --sheet Q1
+241,delete-comment,Remove the comment on A1 in report.xlsx.,sheet delete-comment report.xlsx --cell A1
+242,delete-comment,Delete the note attached to B5 in sales.xlsx.,sheet delete-comment sales.xlsx --cell B5
+243,delete-comment,"On the Data sheet of stats.ods, delete the comment from C3.",sheet delete-comment stats.ods --cell C3 --sheet Data
+244,delete-comment,Get rid of the cell comment at D10 in budget.xlsx.,sheet delete-comment budget.xlsx --cell D10
+245,delete-comment,Clear the comment on F2 of plan.xlsx sheet Q1.,sheet delete-comment plan.xlsx --cell F2 --sheet Q1
+246,hyperlink,Link cell A1 of report.xlsx to https://example.com.,sheet hyperlink report.xlsx --cell A1 --url https://example.com
+247,hyperlink,In sales.xlsx make B5 a link to https://example.com/pricing showing the text Pricing.,sheet hyperlink sales.xlsx --cell B5 --url https://example.com/pricing --text Pricing
+248,hyperlink,On the Data sheet of stats.ods put a hyperlink to https://data.org in C3.,sheet hyperlink stats.ods --cell C3 --url https://data.org --sheet Data
+249,hyperlink,Add a link in D10 of budget.xlsx to https://intranet/budget with the label 'Budget docs'.,sheet hyperlink budget.xlsx --cell D10 --url https://intranet/budget --text 'Budget docs'
+250,hyperlink,"In plan.xlsx sheet Q1, make F2 point to https://example.org/plan.",sheet hyperlink plan.xlsx --cell F2 --url https://example.org/plan --sheet Q1
+251,protect,Protect the first sheet of report.xlsx.,sheet protect report.xlsx
+252,protect,Protect the Sales sheet in sales.xlsx with password s3cret.,sheet protect sales.xlsx --sheet Sales --password s3cret
+253,protect,Lock the Data sheet of stats.ods.,sheet protect stats.ods --sheet Data
+254,protect,In budget.xlsx protect with the password hunter2.,sheet protect budget.xlsx --password hunter2
+255,protect,Password-protect sheet Q1 of plan.xlsx using abc123.,sheet protect plan.xlsx --sheet Q1 --password abc123
+256,unprotect,Unprotect the first sheet of report.xlsx.,sheet unprotect report.xlsx
+257,unprotect,Unprotect the Sales sheet in sales.xlsx; the password is s3cret.,sheet unprotect sales.xlsx --sheet Sales --password s3cret
+258,unprotect,Remove protection from the Data sheet of stats.ods.,sheet unprotect stats.ods --sheet Data
+259,unprotect,In budget.xlsx unprotect using the password hunter2.,sheet unprotect budget.xlsx --password hunter2
+260,unprotect,Unlock sheet Q1 of plan.xlsx with password abc123.,sheet unprotect plan.xlsx --sheet Q1 --password abc123
+261,filter,Show rows of sales.xlsx where column C is greater than 100.,sheet filter sales.xlsx --where 'C>100'
+262,filter,"In orders.xlsx, list rows where column B equals paid. Row 1 is a header.",sheet filter orders.xlsx --where 'B==paid' --header
+263,filter,Return rows in contacts.csv where column A contains smith.,sheet filter contacts.csv --where 'A contains smith'
+264,filter,"From budget.xlsx sheet Q1, get rows where D is at least 50 and E is not closed.",sheet filter budget.xlsx --where 'D>=50' --where 'E!=closed' --sheet Q1
+265,filter,Query stats.ods for rows where column F is less than 0.,sheet filter stats.ods --where 'F<0'
+266,dedupe,Remove duplicate rows from report.xlsx.,sheet dedupe report.xlsx
+267,dedupe,In contacts.csv remove rows that repeat the same value in column A.,sheet dedupe contacts.csv --cols A
+268,dedupe,Dedupe sales.xlsx on columns A and C; row 1 is a header.,"sheet dedupe sales.xlsx --cols A,C --header"
+269,dedupe,"On the Data sheet of stats.ods, delete duplicate rows.",sheet dedupe stats.ods --sheet Data
+270,dedupe,Remove duplicates in budget.xlsx by column B only.,sheet dedupe budget.xlsx --cols B
+271,stats,"Give me the sum, mean, min and max of B2:B50 in sales.xlsx.",sheet stats sales.xlsx --range B2:B50
+272,stats,Compute statistics for C1:C100 in budget.xlsx.,sheet stats budget.xlsx --range C1:C100
+273,stats,What's the average of A2:A30 on the Data sheet of stats.ods?,sheet stats stats.ods --range A2:A30 --sheet Data
+274,stats,How many numeric cells are in D1:F20 of report.xlsx?,sheet stats report.xlsx --range D1:F20
+275,stats,Summary stats for E2:E200 in plan.xlsx sheet Q1.,sheet stats plan.xlsx --range E2:E200 --sheet Q1
+276,chart,Create a column chart of A1:B6 in sales.xlsx anchored at D2.,sheet chart sales.xlsx --range A1:B6 --type column --anchor D2
+277,chart,In report.xlsx add a pie chart titled Share from A1:B5 at E1; the first row holds series names.,sheet chart report.xlsx --range A1:B5 --type pie --anchor E1 --title Share --header
+278,chart,"Add a line chart for A1:C13 on the Data sheet of stats.ods at F2, named Trend.",sheet chart stats.ods --range A1:C13 --type line --anchor F2 --name Trend --sheet Data
+279,chart,"In budget.xlsx insert a bar chart of B1:C10 at A15, 200 mm wide and 100 mm tall.",sheet chart budget.xlsx --range B1:C10 --type bar --anchor A15 --width-mm 200 --height-mm 100
+280,chart,Make a scatter chart from A2:B40 in plan.xlsx placed at H2.,sheet chart plan.xlsx --range A2:B40 --type scatter --anchor H2
+281,delete-chart,Delete the chart named Trend from stats.ods.,sheet delete-chart stats.ods --name Trend
+282,delete-chart,Remove chart Share in report.xlsx.,sheet delete-chart report.xlsx --name Share
+283,delete-chart,On the Data sheet of stats.xlsx delete the chart Chart1.,sheet delete-chart stats.xlsx --name Chart1 --sheet Data
+284,delete-chart,Get rid of the chart called Revenue in budget.xlsx.,sheet delete-chart budget.xlsx --name Revenue
+285,delete-chart,In plan.xlsx sheet Q1 remove the chart Scatter1.,sheet delete-chart plan.xlsx --name Scatter1 --sheet Q1
+286,charts,List the charts in report.xlsx.,sheet charts report.xlsx
+287,charts,What charts are on the Data sheet of stats.ods?,sheet charts stats.ods --sheet Data
+288,charts,Show all charts in budget.xlsx.,sheet charts budget.xlsx
+289,charts,Are there any charts in sales.xlsx?,sheet charts sales.xlsx
+290,charts,Which charts exist on sheet Q1 of plan.xlsx?,sheet charts plan.xlsx --sheet Q1
+291,image,Insert logo.png into report.xlsx at A1.,sheet image report.xlsx --path logo.png --anchor A1
+292,image,"In sales.xlsx place chart.jpg at D5, 100 mm wide.",sheet image sales.xlsx --path chart.jpg --anchor D5 --width-mm 100
+293,image,"Add photo.png to the Data sheet of stats.ods at B2, 80 mm by 60 mm.",sheet image stats.ods --path photo.png --anchor B2 --width-mm 80 --height-mm 60 --sheet Data
+294,image,Embed /home/me/sig.png in budget.xlsx at F20.,sheet image budget.xlsx --path /home/me/sig.png --anchor F20
+295,image,Put banner.png on sheet Q1 of plan.xlsx at A1 with a height of 40 mm.,sheet image plan.xlsx --path banner.png --anchor A1 --height-mm 40 --sheet Q1
+296,status,Is the spreadsheet engine running?,sheet status
+297,status,Check the sheet daemon status.,sheet status
+298,status,"Is the LibreOffice background process up, and how long has it been idle?",sheet status
+299,status,Show the status of the sheet service.,sheet status
+300,status,What's the pid of the spreadsheet daemon?,sheet status
+301,stop,Stop the spreadsheet engine.,sheet stop
+302,stop,Shut down the sheet daemon.,sheet stop
+303,stop,Kill the background LibreOffice process.,sheet stop
+304,stop,I'm done with spreadsheets; stop the service.,sheet stop
+305,stop,Terminate the sheet daemon.,sheet stop

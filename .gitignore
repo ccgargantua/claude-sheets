@@ -1,5 +1,5 @@
-.venv/
 __pycache__/
 HANDOFF.md
 tests/results/
 backup/
+.sheetcli/

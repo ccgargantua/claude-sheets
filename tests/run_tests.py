@@ -83,11 +83,13 @@ def normalize(d):
     for k, v in d.items():
         if callable(v):
             continue
-        if k == "data" and isinstance(v, str):
+        if k in ("data", "ops") and isinstance(v, str):
             try:
                 v = json.loads(v)
             except json.JSONDecodeError:
                 pass
+            if k == "ops" and isinstance(v, list):
+                v = [normalize(op) if isinstance(op, dict) else op for op in v]
         elif k in REF_KEYS and isinstance(v, str):
             v = v.upper()
         out[k] = v

@@ -1,16 +1,16 @@
 import os
 import re
-import zipfile
 
 MAX_FILE = 50 * 1024 * 1024
-MAX_UNZIPPED = 500 * 1024 * 1024
 MAX_CELLS = 1_000_000
 MAX_ROW = 1048576
 MAX_COL = 16384
 
 
 class SheetError(Exception):
-    pass
+    def __init__(self, message, **extra):
+        super().__init__(message)
+        self.extra = extra
 
 
 def col_to_idx(letters):
@@ -67,25 +67,6 @@ def check_size(rng):
         raise SheetError(f"range too large (max {MAX_CELLS} cells)")
 
 
-def overlaps(a, b):
-    return a[0] <= b[2] and b[0] <= a[2] and a[1] <= b[3] and b[1] <= a[3]
-
-
-def shift_rows(r1, r2, at, count):
-    """Row span after inserting (count>0) or deleting (count<0) rows at `at`; None if wiped out."""
-    if count > 0:
-        return (r1 + count if r1 >= at else r1), (r2 + count if r2 >= at else r2)
-    n = -count
-    end = at + n - 1
-    if r2 < at:
-        return r1, r2
-    if r1 > end:
-        return r1 - n, r2 - n
-    if r1 >= at and r2 <= end:
-        return None
-    return (r1 if r1 < at else at), (r2 - n if r2 > end else at - 1)
-
-
 _INT = re.compile(r"[+-]?(0|[1-9]\d*)")
 _FLOAT = re.compile(r"[+-]?(\d+\.\d*|\.\d+|\d+)([eE][+-]?\d+)?")
 
@@ -120,19 +101,37 @@ def check_input_file(path):
         raise SheetError("file too large (max 50 MB)")
 
 
-def check_zip(path):
-    try:
-        with zipfile.ZipFile(path) as z:
-            total = sum(i.file_size for i in z.infolist())
-    except zipfile.BadZipFile:
-        raise SheetError(f"not a valid zip-based file: {path}")
-    if total > MAX_UNZIPPED:
-        raise SheetError("archive too large when uncompressed (max 500 MB)")
-
-
 _BAD_NAME = re.compile(r"[\[\]:*?/\\]")
 
 
 def check_sheet_name(name):
     if not name or len(name) > 31 or _BAD_NAME.search(name):
         raise SheetError(f"invalid sheet name: {name!r} (1-31 chars, none of []:*?/\\)")
+
+
+FORMATS = ("xlsx", "ods", "csv")
+
+
+def fmt_of(path):
+    ext = os.path.splitext(path)[1].lower().lstrip(".")
+    if ext not in FORMATS:
+        raise SheetError("unsupported file type")
+    return ext
+
+
+def parse_row_span(span):
+    parts = str(span).split(":")
+    if len(parts) > 2 or not all(p.isdigit() for p in parts):
+        raise SheetError(f"bad row span: {span!r}")
+    first, last = int(parts[0]), int(parts[-1])
+    if not 1 <= min(first, last) or max(first, last) > MAX_ROW:
+        raise SheetError(f"row out of range: {span}")
+    return min(first, last), max(first, last)
+
+
+def parse_col_span(span):
+    parts = str(span).split(":")
+    if len(parts) > 2:
+        raise SheetError(f"bad column span: {span!r}")
+    first, last = (int(p) if p.isdigit() else col_to_idx(p) for p in parts[0:1] + parts[-1:])
+    return min(first, last), max(first, last)

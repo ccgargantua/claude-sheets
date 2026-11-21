@@ -11,6 +11,10 @@ description: "Read, query, edit and format spreadsheet files (.xlsx, .ods, .csv)
 4. Single-quote JSON and any value with spaces, `=`, `$`, `#`, `!`, `<`, `>`. Use double quotes inside JSON.
 5. Flag values follow the flag after a space: `--sheet Sales`, never `--sheet=Sales`.
 6. Every file-modifying action accepts `--dry-run` (apply, report, do not save) and `--backup` (save `<file>.bak-<UTC timestamp>` first). Add only when the user asks to preview or back up.
+7. Never use shell commands (`cat`, `touch`, `echo`, `ls`, ...). Every request is answered with a `sheet` command, even reading or creating a csv.
+8. Never ask a question or reply with prose. If details are missing, use the defaults in the tables (e.g. first sheet) and emit the command.
+9. Never output placeholders (`FILE`, `<file>`, `X`). Use the exact filenames, cells and values from the request.
+10. The action always comes right after `sheet`; all flags, including `--sheet`, go after the file.
 
 # Disambiguation
 
